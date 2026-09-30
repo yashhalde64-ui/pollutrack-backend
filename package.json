@@ -1,0 +1,16 @@
+{
+  "name": "pollutrack-backend",
+  "version": "1.0.0",
+  "description": "MongoDB & Email OTP Backend Server for PolluTrack Android App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1",
+    "nodemailer": "^6.9.13"
+  }
+}
