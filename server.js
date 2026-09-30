@@ -86,18 +86,23 @@ app.post('/api/send-otp', async (req, res) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log(`[PolluTrack Mailer] Real OTP Email sent to ${email} successfully!`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[PolluTrack Mailer Success] Real OTP Email sent to ${email}. MessageId: ${info.messageId}`);
+    return res.json({
+      success: true,
+      message: `Verification OTP ${otp} sent to ${email}`,
+      email,
+      otp
+    });
   } catch (err) {
-    console.log(`[PolluTrack Mailer Error]: ${err.message}`);
+    console.error(`[PolluTrack Mailer Error]: ${err.message}`);
+    return res.status(500).json({
+      success: false,
+      error: err.message,
+      email,
+      otp
+    });
   }
-
-  res.json({
-    success: true,
-    message: `Verification OTP ${otp} sent to ${email} via PolluTrack Mailer`,
-    email,
-    otp
-  });
 });
 
 // PATCH /api/reports/:id/status - Update report status (Admin Web Portal connect)
