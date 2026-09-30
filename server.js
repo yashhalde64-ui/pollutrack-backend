@@ -31,15 +31,26 @@ const reportSchema = new mongoose.Schema({
 
 const Report = mongoose.model('Report', reportSchema);
 
-// Configure Nodemailer Transporter (Official PolluTrack Gmail App Password)
+// Configure Nodemailer Transporter (Official PolluTrack Gmail App Password Configured)
 const EMAIL_USER = process.env.EMAIL_USER || 'polluttrack@gmail.com';
-const EMAIL_PASS = process.env.EMAIL_PASS || 'nzzg ksdk yyzl diyc';
+const EMAIL_PASS = process.env.EMAIL_PASS || 'ktpr udjb zgax rxqv';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: EMAIL_USER,
     pass: EMAIL_PASS
+  }
+});
+
+// Verify SMTP connection on startup
+transporter.verify((error, success) => {
+  if (error) {
+    console.error('PolluTrack Gmail SMTP Connection Error:', error);
+  } else {
+    console.log('PolluTrack Gmail SMTP Transporter is Ready to send OTP Emails!');
   }
 });
 
@@ -73,7 +84,7 @@ app.post('/api/send-otp', async (req, res) => {
     const mailOptions = {
       from: `"PolluTrack Verification" <${EMAIL_USER}>`,
       to: email,
-      subject: `PolluTrack Verification Code: ${otp}`,
+      subject: `PolluTrack — Verification OTP Code: ${otp}`,
       html: `
         <div style="font-family: Arial, sans-serif; padding: 24px; background-color: #0A1813; color: #ffffff; border-radius: 12px; border: 1px solid #1C3A30;">
           <h2 style="color: #27C196; margin-top: 0;">PolluTrack — Report. Track. Breathe Clean.</h2>
