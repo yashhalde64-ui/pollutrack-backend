@@ -31,12 +31,15 @@ const reportSchema = new mongoose.Schema({
 
 const Report = mongoose.model('Report', reportSchema);
 
-// Configure Nodemailer Transporter (credentials come ONLY from .env file, never hardcoded)
+// Configure Nodemailer Transporter (Official PolluTrack Gmail App Password)
+const EMAIL_USER = process.env.EMAIL_USER || 'polluttrack@gmail.com';
+const EMAIL_PASS = process.env.EMAIL_PASS || 'nzzg ksdk yyzl diyc';
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    user: EMAIL_USER,
+    pass: EMAIL_PASS
   }
 });
 
@@ -68,7 +71,7 @@ app.post('/api/send-otp', async (req, res) => {
 
   try {
     const mailOptions = {
-      from: `"PolluTrack Verification" <${process.env.EMAIL_USER}>`,
+      from: `"PolluTrack Verification" <${EMAIL_USER}>`,
       to: email,
       subject: `PolluTrack Verification Code: ${otp}`,
       html: `
